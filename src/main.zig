@@ -2,19 +2,21 @@ const std = @import("std");
 const tidy_up_files = @import("tidy_up_files");
 
 const managementFile = @import("managementFiles.zig").ManagementFile;
+const managementArgument =  @import("managementArgs.zig").ManagementArgs;
+
 // const managementTerminal = @import("managementTerminal.zig").ManagementTerminal;
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
 
     var file_exec = managementFile.init(allocator);
+    // var terminal_exec = managementTerminal.init(allocator);
+    var argument_exec = managementArgument.init(allocator);
+
+
     const extensi_file_name = file_exec.read_extensi_file() catch |err| blk: {
         std.debug.print("gagal mendapatkan extensi file name {any} \n", .{err});
         break :blk &[_][]const u8{}; // fallback ke slice kosong
     };
-
-    // for (extensi_file_name) |value| {
-    //     std.debug.print("extensi file name  : {s}\n", .{value});
-    // }
 
     const file_names = file_exec.read_files() catch |err| blk: {
         std.debug.print("gagal membaca file {any}\n", .{err});
